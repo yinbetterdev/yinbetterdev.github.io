@@ -1,6 +1,6 @@
 # Site settings
 title_left    : "Yin"
-title_right   : "dev" # default: ""
+title_right   : "Dev" # default: ""
 description   : "Make ez programming life"
 keywords      : "react-native, php, java, python, linux, oracle"
 url           : https://yinbetterdev.github.io # site url
