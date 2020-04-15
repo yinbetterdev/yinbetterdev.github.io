@@ -30,7 +30,7 @@ We can also open a range of ports in the same way.
 [root@centos7 ~]# firewall-cmd --permanent --add-port=200-300/tcp
 success
 ```
-##Open Predefined Service
+###Open Predefined Service
 
 Rather than manually specifying a port number to allow through the firewall, we can make use of a bunch of predefined services which may be easier. For example instead of opening TCP port 80, we can use the ‘http’ service.
 ```
@@ -57,7 +57,7 @@ This is a predefined service and can be found as an XML file in the /usr/lib/fir
 ```
 We can create custom services by copying one of these into the /etc/firewalld/services/ directory and then customizing it. The services in the /usr/lib/firewalld/services/ directory should NOT be modified, changes should be copied into /etc/firewalld/services/ followed by a reload of firewall-cmd to pick up the changes.
 
-##Services Or Manual Ports?
+###Services Or Manual Ports?
 
 Why would we want to use services if we can just specify the port? Modules can be specified in a service, for example samba.xml loads the module “nf_conntrack_netbios_ns” for us when it’s enabled, along with four different ports which is a lot easier than doing all of this ourselves as we don’t need to memorize all of the ports required for a service.
 
