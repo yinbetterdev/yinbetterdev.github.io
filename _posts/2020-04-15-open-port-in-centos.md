@@ -41,13 +41,15 @@ Now if we list the services that are accepted through the firewall, we will see 
 >dhcpv6-client http ssh
 This is a predefined service and can be found as an XML file in the /usr/lib/firewalld/services/ directory. Here’s what the http service we just used looks like.
 
->[root@centos7 ~]# cat /usr/lib/firewalld/services/http.xml
-><?xml version="1.0" encoding="utf-8"?>
-><service>
->  <short>WWW (HTTP)</short>
->  <description>HTTP is the protocol used to serve Web pages. If you plan to make your Web server publicly available, enable this option. This option is not required for viewing pages locally or developing Web pages.</description>
->  <port protocol="tcp" port="80"/>
-></service>
+```
+[root@centos7 ~]# cat /usr/lib/firewalld/services/http.xml
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>WWW (HTTP)</short>
+  <description>HTTP is the protocol used to serve Web pages. If you plan to make your Web server publicly available, enable this option. This option is not required for viewing pages locally or developing Web pages.</description>
+  <port protocol="tcp" port="80"/>
+</service>
+```
 We can create custom services by copying one of these into the /etc/firewalld/services/ directory and then customizing it. The services in the /usr/lib/firewalld/services/ directory should NOT be modified, changes should be copied into /etc/firewalld/services/ followed by a reload of firewall-cmd to pick up the changes.
 
 ##Services Or Manual Ports?
