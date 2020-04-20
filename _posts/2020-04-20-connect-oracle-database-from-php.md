@@ -23,8 +23,11 @@ el6 means it is enterprise linux 6 and x86_64 means it is 64 bit machine. For 32
 Here you need to choose “Instant Client for Linux x86_64”. For 32 bit machine you should select “Instant Client for Linux x86”.
 
 Download red tick instant client basic RPM package.
+
 ![instantclient_basic](https://i1.wp.com/www.techinfobest.com/wp-content/uploads/2014/02/instantclient_basic.png)
+
 Scroll down and download red tick instant client devel rpm package.
+
 ![instantclient_devel](https://i0.wp.com/www.techinfobest.com/wp-content/uploads/2014/02/instantclient_devel.png)
 
 ###### 3. Install the RPMs as the root user
