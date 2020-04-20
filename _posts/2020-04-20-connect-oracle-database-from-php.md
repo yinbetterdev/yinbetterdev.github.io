@@ -6,11 +6,11 @@ comments: true
 keywords: "centos, php, oracle"
 ---
 
-###Connect oracle database from php in Redhat/CentOS/Fedora
+### Connect oracle database from php in Redhat/CentOS/Fedora
 
 The post will describe how to connect Oracle database from PHP in Redhat/CentOS in step by step. The easiest way to configure PHP to access a remote Oracle Database is to use Oracle Instant Client libraries. This note describes how to install PHP with the OCI8 Extension and Oracle Instant Client on Redhat/CentOS. OCI8 is the PHP extension for connecting to Oracle Database. You need to install two packages: oracle-instant-client and php oci8 extension. It is assumed that PHP with pecl package is installed in your server
 
-1.Check your server architecture and OS version
+1. Check your server architecture and OS version
 ```
 # uname -a
 Linux localhost 2.6.32-220.el6.x86_64 #1 SMP Wed Nov 9 08:03:13 EST
@@ -18,14 +18,16 @@ Linux localhost 2.6.32-220.el6.x86_64 #1 SMP Wed Nov 9 08:03:13 EST
 ```
 el6 means it is enterprise linux 6 and x86_64 means it is 64 bit machine. For 32 bit machine it would be i386
 
-2.Download two RPM packages: oracle-instantclient basic and oracle-instantclient devel from [instant client downloads page](http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html) . 
+2. Download two RPM packages: oracle-instantclient basic and oracle-instantclient devel from [instant client downloads page](http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html) . 
+
 Here you need to choose “Instant Client for Linux x86_64”. For 32 bit machine you should select “Instant Client for Linux x86”.
+
 Download red tick instant client basic RPM package.
 ![instantclient_basic](https://i1.wp.com/www.techinfobest.com/wp-content/uploads/2014/02/instantclient_basic.png)
 Scroll down and download red tick instant client devel rpm package.
 ![instantclient_devel](https://i0.wp.com/www.techinfobest.com/wp-content/uploads/2014/02/instantclient_devel.png)
 
-3.Install the RPMs as the root user
+3. Install the RPMs as the root user
 ```
 # rpm -Uvh oracle-instantclient12.1-basic-12.1.0.1.0-1.x86_64.rpm
 Preparing...                ########################################### [100%]
@@ -36,7 +38,7 @@ Preparing...                ########################################### [100%]
 ```
 The instantclient library and executable files are generally installed on /usr/lib/oracle/12.1/client64/ for 64 bit machine and on /usr/lib/oracle/12.1/client/ for 32 machine
 
-4.Set environment variables ORACLE_HOME and LD_LIBRARY_PATH
+4. Set environment variables ORACLE_HOME and LD_LIBRARY_PATH
 ```
 # ORACLE_HOME=/usr/lib/oracle/12.1/client64; export ORACLE_HOME
 # LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
