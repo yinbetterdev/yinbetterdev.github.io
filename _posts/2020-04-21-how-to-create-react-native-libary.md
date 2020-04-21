@@ -10,7 +10,7 @@ As a React Native developer I want to be able to invoke native code when needed.
 
 Most guides instruct users to install the bridge within their application. Since I’m a library developer this bridge will be independent from applications.
 
-Warning: `react-native` applications only! Per the React Native Documentation if you’re looking to consume native code in your React Native application you cannot use a project created using create-react-native-app. You need to use `react-native` as described in the next step.
+Warning: `react-native` applications only! Per the React Native Documentation if you’re looking to consume native code in your React Native application you cannot use a project created using `create-react-native-app.` You need to use `react-native` as described in the next step.
 
 ## Overview
 
@@ -96,11 +96,11 @@ $ tree
 ```
 This has created all the files needed to start working on the native bridge. Here’s a brief overview of what’s included:
 
-* README.md – documentation
-* android/ – directory containing native code for Android/Java
-* index.js – configuration file which exports your native code for consumption via Javascript
-* ios/ – directory containing native code for iOS/Objective C
-* package.json – Specifics of npm’s package.json handling
+* `README.md` – documentation
+* `android/` – directory containing native code for Android/Java
+* `ndex.js` – configuration file which exports your native code for consumption via Javascript
+* `ios/` – directory containing native code for iOS/Objective C
+* `package.json` – Specifics of npm’s package.json handling
 * windows – directory containing native code for Windows (not covered in this post).
 
 There’s some additional changes required before any native code can be written.
@@ -108,8 +108,8 @@ There’s some additional changes required before any native code can be written
 ## Fixup the npm code
 There’s two files which should be updated after creating the boilerplate:
 
-* package.json
-* index.js
+* `package.json`
+* `index.js`
 Let’s start with `package.json` (specifics of npm’s package.json handling):
 
 ```
