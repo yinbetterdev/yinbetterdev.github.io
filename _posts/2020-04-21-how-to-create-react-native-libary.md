@@ -231,54 +231,55 @@ xCode should resolve all the the dependencies and compile/build successfully.
 Rename `RNExampleBridge.h` and `RNExampleBridge.m` file names (and every reference to them within the code of these two files) following the naming convention used above for Android. Be sure the naming conventions match the Android implementation. If the names are offset the React Native methods will only work on one platform (iOS/Android).
 
 ## Add some native Java code
-It’s time to add some native Java code to the bridge. In this example we’ll add a Toast message to verify the native code is working. Using Android Studio open the subclass of ReactContextBaseJavaModule (which was renamed from RNExampleBridgeModule.java above). Methods designated for React Native are declared using the @ReactMethod annotation. You can access Context using the ReactApplicationContext provided from the ReactPackage implementation (included from creating the module as shown above). The following example exposes a method called showMessage() which shows a native Android Toast method.
+It’s time to add some native Java code to the bridge. In this example we’ll add a `Toast` message to verify the native code is working. Using Android Studio open the subclass of `ReactContextBaseJavaModule` (which was renamed from `RNExampleBridgeModule.java` above). Methods designated for React Native are declared using the `@ReactMethod` annotation. You can access`Context` using the `ReactApplicationContext` provided from the `ReactPackage` implementation (included from creating the module as shown above). The following example exposes a method called `showMessage()` which shows a native Android `Toast` method.
 
-1
-2
-3
-4
+```
 @ReactMethod
   public void showMessage() {
     Toast.makeText(reactContext.getApplicationContext(), "NATIVE CODE IS WORKING", Toast.LENGTH_LONG).show();
 }
-Add some native Objective C code
-Using xCode open the implementation of RNExampleBridge.h (RNExampleBridge.m) and add the showMessage() method. Methods designated for React Native are declared using RCT_EXPORT_METHOD:
+```
+## Add some native Objective C code
+Using xCode open the implementation of `RNExampleBridge.h` (`RNExampleBridge.m`) and add the `showMessage()` method. Methods designated for React Native are declared using `RCT_EXPORT_METHOD`:
 
-1
-2
-3
-4
-5
-6
+```
 RCT_EXPORT_METHOD(showMessage) {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"UIAlertView"
                                                     message:@"NATIVE CODE IS WORKING!" delegate:self cancelButtonTitle:@"Cancel"
                                           otherButtonTitles:@"OK", nil];
     [alert show];
 }
-Now we have a showMessage() method exposed for React Native on both iOS and Android. Calls to this module/method will automatically be routed and invoked by React Native for the correct platform (iOS or Android)!
+```
+Now we have a `showMessage()` method exposed for React Native on both iOS and Android. Calls to this module/method will automatically be routed and invoked by React Native for the correct platform (iOS or Android)!
 
-Consume the native React Native methods
-It’s time to consume the native React Native module/methods we exposed above. As noted above React Native applications created using create-react-native-app are unable to consume native code. Make sure the application was created using react-native as shown above.
+## Consume the native React Native methods
+It’s time to consume the native React Native module/methods we exposed above. As noted above React Native applications created using `create-react-native-app` are unable to consume native code. Make sure the application was created using `react-native`as shown above.
 
 The first step is to install the module as an npm package locally on your machine. This can be done globally from your native modules root directory by invoking:
-
+```
 # Install the native module to the local machine with global accessibility
 /{path-to-react-native-bridge-module} $npm install . -g
 /usr/local/lib
 └── example-bridge@1.0.0
-Notice npm has successfully installed the package globally using the name provided defined in the native modules package.json “name” and “version” values. The application can now consume the native module using the link command. Change directory back to the application consuming the native module and link the native module to the application:
+```
 
+Notice `npm` has successfully installed the package globally using the name provided defined in the native modules `package.json` “name” and “version” values. The application can now consume the native module using the `link` command. Change directory back to the application consuming the native module and link the native module to the application:
+
+```
 # Link the native module to the application using the package name defined from package.json
 /{path-to-react-native-app} $ react-native link example-bridge
-Open the index.js file of your application and register the module we just linked. The name to register comes from the name defined in the native modules index.js file:
-
+```
+Open the `index.js` file of your application and register the module we just linked. The name to register comes from the name defined in the native modules `index.js` file:
+```
 AppRegistry.registerComponent('RNExampleBridge', () => App);
-Once the component is registered it can now be consumed by the application using these names (“ExampleBridge” and “example-bridge”). Open App.js and import the module / consume the code.
-
+```
+Once the component is registered it can now be consumed by the application using these names (“ExampleBridge” and “example-bridge”). Open `App.js` and import the module / consume the code.
+```
 import ExampleBridge from 'example-bridge'
-Now methods exposed for React Native can be invoked through Javascript. Let’s add a button to show the appropriate native alert defined on each platform as showMessage():
+```
+Now methods exposed for React Native can be invoked through Javascript. Let’s add a button to show the appropriate native alert defined on each platform as `showMessage()`:
 
+```
 export default class App extends Component {
   _showNativeMessage() { ExampleBridge.showMessage(); }
  
@@ -290,22 +291,25 @@ export default class App extends Component {
     );
   }
 }
-Run the application
-React Native applications created using react-native can be run by invoking (make sure you have an emulator or attached device instance running):
-
+```
+## Run the application
+React Native applications created using `react-native` can be run by invoking (make sure you have an emulator or attached device instance running):
+```
 # Android
 /{path-to-react-native-app} $ react-native run-android
  
 #iOS
 /{path-to-react-native-app} $ react-native run-ios
-You should see each platform consume and build the application and ExampleBridge native module dependency. Another terminal should be launched for the Metro Bundler. This terminal is responsible for deploying the application to the device.
+```
+You should see each platform consume and build the application and `ExampleBridge` native module dependency. Another terminal should be launched for the `Metro Bundler`. This terminal is responsible for deploying the application to the device.
 
-Troubleshooting
+## Troubleshooting
 I experienced some caching issues during development resulting in a cached version of the module being used instead of the latest. To remove cached modules:
 
-rm -rf node_modules in the app
-rm -rf node_modules globally
-delete the ios/build directory in the app
-clean each of the native code projects
-Consuming native code libraries
+* `rm -rf node_modules` in the app
+* `rm -rf node_modules` globally
+* delete the ios/build directory in the app
+* clean each of the native code projects
+
+## Consuming native code libraries
 If you’re looking to consume native code from a third party library; you can include the library natively (build.gradle dependency for Android / xCode link with binary library for iOS). Once you have a reference to the dependency you can include it in your native code and execute as desired.
