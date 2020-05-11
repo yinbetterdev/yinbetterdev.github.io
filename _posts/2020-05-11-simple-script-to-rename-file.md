@@ -6,7 +6,7 @@ comments: true
 keywords: "python"
 ---
 
-I have a folder with lot of file. I need to change all file that have name include '@1x' to ''. So I write a verry simple script to do it.
+I have a folder with a lot of file. I need to change all file that have name include '@1x' to ''. So I write a verry simple script to do it.
 
 ##Change file's name with python
 
