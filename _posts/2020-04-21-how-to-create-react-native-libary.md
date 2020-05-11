@@ -35,7 +35,7 @@ The following packages are required to proceed:
 4. xCode including simulator support or a physical device.
 5. Visual Code or your favorite Javascript / text editor.
 
-During installation `npm`should warn you of any other packages you might need. I used `node` v6.12.3 because the latest version (at this time) of node wasn’t compatible with React Native.
+During installation `npm` should warn you of any other packages you might need. I used `node` v6.12.3 because the latest version (at this time) of node wasn’t compatible with React Native.
 
 ## Create the bridge boilerplate
 I used the frostney/react-native-create-library command line tool for creating the boilerplate code. This is an `npm` tool which can be installed using:
