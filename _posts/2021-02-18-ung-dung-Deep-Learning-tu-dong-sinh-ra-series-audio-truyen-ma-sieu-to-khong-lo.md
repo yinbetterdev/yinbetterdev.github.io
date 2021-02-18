@@ -407,3 +407,130 @@ class Tacotron2(nn.Module):
             [mel_outputs, mel_outputs_postnet, gate_outputs, alignments],
             output_lengths)
 ```            
+## Tạo dữ liệu training và testing
+
+Việc tiếp theo chúng ta cần thực hiện đó là phân chia dữ liệu thành hai tập training và testing. Bước này khá đơn giản, chúng ta sẽ lấy ngẫu nhiên khoảng 80% của dữ liệu để làm dữ liệu training và 20% còn lại để làm dữ liệu testing. Các cháu phân chia rồi ghi kết quả ra file .txt theo format từng dòng là
+```
+absolute_audio_path | coressponding text
+```
+Để làm được điều đó các cháu vào trong thư mục data đã normalize ở phần đầu, thực hiện như sau:
+^ Mở file output.csv và shuffle random dữ liệu. Việc này khiến cho dữ liệu của chúng ta được trộn lẫn một cách random trước khi chia training và testing
+```
+# Training testing split
+import pandas as pd
+
+data = pd.read_csv('output.csv', sep='|', header=-1)
+
+# Suffle
+data = data.sample(frac=1)
+```
+1. Chia training và testing file:
+```
+import os
+
+train_ratio = 0.8
+train_index = int(train_ratio * len(data))
+
+with open('training.txt', 'w') as fd:
+    for i, fname in enumerate(data[0][:train_index]):
+        fd.write('{}|{}\n'.format(os.path.join(os.getcwd(), fname), data[1][i]))
+
+with open('testing.txt', 'w') as fd:
+    for i, fname in enumerate(data[0][train_index:]):
+        fd.write('{}|{}\n'.format(os.path.join(os.getcwd(), fname), data[1][i]))
+```
+Sau đó chúng ta sẽ có hai file trong cùng thư mục để thực hiện cho việc training sau này.
+
+## Tạo characters set cho tiếng Việt
+
+Đây là bước rất quan trọng. Các cháu vào trong thư mục 'text/symbols.py' và thay thế dòng sau:
+```
+_letters  = '0123456789aáảàãạâấẩầẫậăắẳằẵặbcdđeéẻèẽẹêếểềễệfghiíỉìĩịjklmnoóỏòõọôốổồỗộơớởờỡợpqrstuúủùũụưứửừữựvwxyýỷỳỹỵz'
+```
+Đây chính là tập các kí tự tiếng Việt sau khi đã tiến hành normalize text. Các cháu có thể bổ sung thêm các kí tự khác nếu trong tập dữ liệu có thêm các loại kí tự đặc biệt. Nhưng với các trường hợp phổ thông của tiếng Việt thì như vậy là đủ rồi.
+### Cấu hình tham số
+
+Các tham số của mô hình Tacotron2 được config tại file hparams.py các cháu không nên thay đổi các tham số mặc định của mô hình. Chỉ thay đổi một vài thông số cơ bản sau:
+1. Các cháu thay dòng
+```
+ignore_layers=['embedding.weight'],
+```
+thành
+```
+ignore_layers=[''],
+```
+Do chúng ta không sử dụng Transfer Learning mà sẽ training lại từ đầu trên tập dữ liệu truyện ma tiếng Việt luôn
+2. Các cháu thay đổi đường dẫn đến hai file đã sinh ra ở phần tạo dữ liệu training và testing. Nhớ là dùng đường dẫn tuyệt đối nhé
+```
+training_files='filelists/ljs_audio_text_train_filelist.txt',
+validation_files='filelists/ljs_audio_text_val_filelist.txt',
+```
+3. Các cháu đổi lại tham số text_cleaners từ english_cleaners thành basic_cleaners để nó nhận từ điển tiếng Việt mà chúng ta đã config phía bên trên
+4. Các cháu đổi lại batct_size nếu như máy của các cháu không đủ tài nguyên GPU.
+OK vậy là bước cấu hình đã xong, giờ chúng ta bắt đầu vào training thôi nhé.
+
+## Training mô hình:
+
+Sau khi tiến hành đầy đủ các bước trên các cháu tiến hành training bằng câu lệnh đơn giản sau:
+```
+python train.py -o output_vi -l logs
+```
+Thời gian training thông thường mất khá lâu (khoảng 1 ngày với máy tính GPU 2080 Ti / 5h dữ liệu) thì mới có thể thấy kết quả ở mức chấp nhận được. Các cháu cứ bình tĩnh. Không có điều gì là dễ dàng cả đâu các cháu ạ. Nếu cháu nào lười training thì ông có sẵn pretrained model cho các cháu đây. Các cháu có thể download thử tại đây nhé. Ông mới training với khoảng 13h dữ liệu và khoảng 2 ngày training thôi các cháu nhé.
+
+## Thử nghiệm mô hình
+
+Sau khi đã training được mô hình các cháu có thể mở file [inference.py](http://inference.py/) ra để thử nghiệm mô hình này. Lưu ý rằng các cháu chưa động gì đến phần Wavenet phía sau nên trong phần vocder các cháu để nguyên nhé, chỉ thay các tham số của mô hình Tacotron2 mà chúng ta vừa training xong thôi nhé. Các cháu có thể nghe thử mấy câu nha:
+> Các cháu của ông ơi, hôm nay các cháu có khỏe không [nghe thử tại đây](https://drive.google.com/file/d/1dRaAdqSsl-gYjOQR2FUaCotvecaQqrit/view?usp=sharing)
+
+## Hậu xử lý với nhiều câu
+
+Kết quả trên là thử nghiệm với một câu đơn. Đối với một đoạn văn bản dài chúng ta cần có một vài bước hậu xử lý nữa. Ở đây chúng ta chưa bàn quá sâu về bước này, chỉ đơn giản là ghép các câu lại với nhau và thêm các khoảng ngắt nghỉ thích hợp với dấu chấm và dấu phất thôi. Các cháu có thể tham khảo hai hàm sau
+```
+import re
+
+def tts(text):    
+    text = normalize("NFC", text).lower()
+    sequence = np.array(text_to_sequence(text, ['basic_cleaners']))[None, :]
+    sequence = torch.autograd.Variable(
+        torch.from_numpy(sequence)).cuda().long()
+
+    with torch.no_grad():
+        mel_outputs, mel_outputs_postnet, _, alignments = model.inference(sequence)
+        audio = waveglow.infer(mel_outputs_postnet, sigma=0.666)
+    audio_denoised = denoiser(audio, strength=0.005)[:, 0].cpu().numpy()
+
+    return audio_denoised
+
+def pts(para):
+    audio = np.zeros((1,0))
+    sentence_ls = para.split(".")
+
+    for sen in sentence_ls:
+        sub_stn_ls = re.split(",|;|-|:", sen)
+        for sub_stn in sub_stn_ls:
+            audio = np.append(audio, tts(sub_stn), axis=1)
+            audio = np.append(audio, np.zeros((1, int(hparams.sampling_rate/8)), dtype=np.uint8) , axis=1)
+        audio = np.append(audio, np.zeros((1, int(hparams.sampling_rate/4)), dtype=np.uint8) , axis=1)
+    return audio
+```
+Để sinh ra một audio dài các cháu sử dụng lệnh
+```
+pts("Câu gì đó, gì đó. Câu gì đó nữa, câu gì đó, gì gì đó. Chả biết viết câu gì đó nữa, tóm lại là câu gì đó")
+```
+Và kết quả các cháu có thể thấy ở [đây](https://drive.google.com/file/d/1s6YubHGGvysl1obgQlyGeNaiJAItbaCu/view?usp=sharing)
+
+## Kết quả cuối cùng
+
+Mời các cháu nghe thử một vài câu nha.
+> Xin chào các cháu, các cháu nhớ cho ông một like để ủng hộ ông nha. Ông đang rất là vui, hôm nay ông sẽ hướng dẫn các cháu làm món bánh siêu to khổng lồ nhé [nghe thử tại đây](https://drive.google.com/file/d/1jqwMPjWzZn-zhdXKdF-HE_o8xGahNxvU/view?usp=sharing)
+
+> Ra đường sợ nhất công nông. Về nhà sợ nhất vợ không nói gì [nghe thử tại đây](https://drive.google.com/file/d/1_5kdZaFEhLRO5u4gMAVgs0D2rqTe9PPk/view?usp=sharing)
+
+Còn đọc truyện ma siêu to khổng lồ luôn nhé các cháu.
+```
+Vì lòng tham mà bọn chúng đã cắt mái tóc của cô gái đã chết đem bán ngoài tiệm làm tóc giả. Từ đây nhiều điều ma quái đã xuất hiện trong ngôi nhà. Cô chị là một kẻ ăn chơi, vào một ngày nọ cô ta nhốt cô em gái của mình vào nhà, ngôi nhà bị cháy nhưng kì lạ thay người chết là người chị chứ không phải người em. Cô chị không hề biết bản thân mình đã chết. Cho đến khi cô em gặp được bố mẹ mình và khóc kêu rằng chị gái đã chết nghe thử tại đây
+```
+
+## Tổng kết
+
+Vậy là hôm nay ông đã hướng dẫn các cháu sơ qua các bước để làm một mô hình speech to text. Kết quả bước đầu như vậy là khá tốt nhưng vẫn còn cần phải cải tiến nhiều thứ trong phần hậu xử lý cũng như làm dữ liệu cho chuẩn xác hơn. Rất hi vọng sẽ là món quà cho các cháu trong mùa hè nóng nực này. Thân ái chào tạm biệt các cháu
