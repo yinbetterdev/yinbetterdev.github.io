@@ -5,7 +5,7 @@ description: "5 Bước Xác Thực Nodejs Với JSON Web Token (JWT)"
 comments: true
 keywords: "nodejs"
 ---
-Với bài viết này, mình sẽ hướng dẫn các bạn thông qua 5 bước để chúng ta tích hợp xác thực JWT vào project của chúng ta. Ở bài viết này mình không đi sâu vào tìm hiểu lý thuyết, các bạn có thể tìm hiểu lý thuyết ở đây https://viblo.asia/p/tim-hieu-ve-json-web-token-jwt-7rVRqp73v4bP Mình sẽ tập trung vào practice. Let's go! Trước khi thực hiện xác thực JWT phải cài đặt một số package.
+Với bài viết này, mình sẽ hướng dẫn các bạn thông qua 5 bước để chúng ta tích hợp xác thực JWT vào project của chúng ta. Ở bài viết này mình không đi sâu vào tìm hiểu lý thuyết, các bạn có thể tìm hiểu lý thuyết ở đây (https://viblo.asia/p/tim-hieu-ve-json-web-token-jwt-7rVRqp73v4bP) Mình sẽ tập trung vào practice. Let's go! Trước khi thực hiện xác thực JWT phải cài đặt một số package.
 
 ### Prerequisite
 
