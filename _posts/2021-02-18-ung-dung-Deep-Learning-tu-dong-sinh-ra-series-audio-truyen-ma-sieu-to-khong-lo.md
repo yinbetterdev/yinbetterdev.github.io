@@ -425,6 +425,7 @@ data = pd.read_csv('output.csv', sep='|', header=-1)
 data = data.sample(frac=1)
 ```
 1. Chia training và testing file:
+
 ```
 import os
 
