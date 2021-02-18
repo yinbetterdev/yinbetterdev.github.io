@@ -339,3 +339,71 @@ s(i)=LSTM(s(i−1),G(i),Y(i))
 
 Phần tiếp theo chúng ta sẽ cùng tìm hiểu về thành phần cuối cùng (màu da cam) được gọi là Decoder
 
+### Decoder
+
+Mục đích của mạng decoder là sinh ra mel spectrogram từ kết quả đầu ra của bước trước. Đầu tiên phải xét đến mạng pre-net với 2 fully connected layers gồm 256 units và hàm kích hoạt ReLU. Đầu ra của mạng pre-net được concatnate với đầu ra của mạng attention và được đưa qua 2 lớp LSTM với 1024 units. Cuối cùng để predict ra mel spectrogram thì vector đầu ra được đưa qua 5 layers convolution được gọi là post-net. Chắc là lý thuyết đến như vậy là đủ rồi các cháu nhỉ. Giờ chúng ta bắt tay ngay vào phần thực hành thôi nhé.
+
+## Training mô hình
+
+Rất khuyến khích nếu cháu nào đọc hết phần lý thuyết bên trên nhưng cũng đã đến lúc chúng ta cần phải đi sâu vào thực tế hơn một chút rồi đó. Ở đây để cho dễ dàng chúng ta sẽ sử dụng Pytorch để training mô hình Tacotron 2 này. Một trong những repo implêmnt mô hình này tuyệt vời nhất đó là [NVIDIA/tacontron-2](https://github.com/NVIDIA/tacotron2). Trong đó chúng ta cùng đi sâu phân tích cách họ implement mô hình nhé. Các cháu mở file [model.py](https://github.com/NVIDIA/tacotron2/blob/master/model.py) ra sẽ thấy toàn bộ các phần code implement đến mô hình. Ông rất khuyến khích các cháu thử dành ra một vài giờ để ngồi đọc code của họ xem họ xử lý ra sao. Tất cả các phần họ sử dụng đã được trình bày ở phần lý thuyết phía trên nhưng có vẻ như việc đọc code sẽ dễ hiểu hơn rất nhiều so với việc đọc lý thuyết phải không các cháu.
+```
+class Tacotron2(nn.Module):
+    def __init__(self, hparams):
+        super(Tacotron2, self).__init__()
+        self.mask_padding = hparams.mask_padding
+        self.fp16_run = hparams.fp16_run
+        self.n_mel_channels = hparams.n_mel_channels
+        self.n_frames_per_step = hparams.n_frames_per_step
+        self.embedding = nn.Embedding(
+            hparams.n_symbols, hparams.symbols_embedding_dim)
+        std = sqrt(2.0 / (hparams.n_symbols + hparams.symbols_embedding_dim))
+        val = sqrt(3.0) * std  # uniform bounds for std
+        self.embedding.weight.data.uniform_(-val, val)
+        self.encoder = Encoder(hparams)
+        self.decoder = Decoder(hparams)
+        self.postnet = Postnet(hparams)
+
+    def parse_batch(self, batch):
+        text_padded, input_lengths, mel_padded, gate_padded, \
+            output_lengths = batch
+        text_padded = to_gpu(text_padded).long()
+        input_lengths = to_gpu(input_lengths).long()
+        max_len = torch.max(input_lengths.data).item()
+        mel_padded = to_gpu(mel_padded).float()
+        gate_padded = to_gpu(gate_padded).float()
+        output_lengths = to_gpu(output_lengths).long()
+
+        return (
+            (text_padded, input_lengths, mel_padded, max_len, output_lengths),
+            (mel_padded, gate_padded))
+
+    def parse_output(self, outputs, output_lengths=None):
+        if self.mask_padding and output_lengths is not None:
+            mask = ~get_mask_from_lengths(output_lengths)
+            mask = mask.expand(self.n_mel_channels, mask.size(0), mask.size(1))
+            mask = mask.permute(1, 0, 2)
+
+            outputs[0].data.masked_fill_(mask, 0.0)
+            outputs[1].data.masked_fill_(mask, 0.0)
+            outputs[2].data.masked_fill_(mask[:, 0, :], 1e3)  # gate energies
+
+        return outputs
+
+    def forward(self, inputs):
+        text_inputs, text_lengths, mels, max_len, output_lengths = inputs
+        text_lengths, output_lengths = text_lengths.data, output_lengths.data
+
+        embedded_inputs = self.embedding(text_inputs).transpose(1, 2)
+
+        encoder_outputs = self.encoder(embedded_inputs, text_lengths)
+
+        mel_outputs, gate_outputs, alignments = self.decoder(
+            encoder_outputs, mels, memory_lengths=text_lengths)
+
+        mel_outputs_postnet = self.postnet(mel_outputs)
+        mel_outputs_postnet = mel_outputs + mel_outputs_postnet
+
+        return self.parse_output(
+            [mel_outputs, mel_outputs_postnet, gate_outputs, alignments],
+            output_lengths)
+```            
