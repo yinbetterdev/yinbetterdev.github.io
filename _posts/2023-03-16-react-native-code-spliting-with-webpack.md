@@ -183,8 +183,10 @@ yarn run start
 - Bước 1: Host 2 file `HelloWorld_tsx.chunk.bundle` và `HelloWorld_tsx.chunk.bundle.map` trên một server/vps/cloud có url ví dụ : `https://my-chunk-manager.com`
 
 Đảm bảo từ ứng dụng có thể get được 2 file trên qua đường dẫn:
-https://my-chunk-manager.com/HelloWorld_tsx.chunk.bundle
-https://my-chunk-manager.com/HelloWorld_tsx.chunk.bundle.map
+
+[https://my-chunk-manager.com/HelloWorld_tsx.chunk.bundle](https://my-chunk-manager.com/HelloWorld_tsx.chunk.bundle)
+
+[https://my-chunk-manager.com/HelloWorld_tsx.chunk.bundle.map](https://my-chunk-manager.com/HelloWorld_tsx.chunk.bundle.map)
 
 - Bước 2: Thay url `https://my-chunk-manager.com` vào `getRemoteURL` trong function `ScriptManager.shared.addResolver`
 
@@ -215,4 +217,4 @@ Bài tới mính sẽ giới thiệu đến các bạn `Module Federation`, và 
 
 ## Tài liệu tham khải
 
-- https://re-pack.netlify.app/docs/code-splitting
+- [https://re-pack.netlify.app/docs/code-splitting](https://re-pack.netlify.app/docs/code-splitting)
