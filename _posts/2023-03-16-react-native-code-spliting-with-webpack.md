@@ -108,11 +108,13 @@ ScriptManager.shared.addResolver(async (scriptId) => {
 ```
 Đoạn code này giúp tùy biến và xử lý việc `chunk` sẽ được lấy ở đâu trước khi load.
 Nếu bạn muốn `cache` lại các `chunk` đã load, có thể thêm đoạn code này vào trước  `addResolver`
+
 ```
 ScriptManager.shared.setStorage(AsyncStorage);
 ```
 
 - Tạo mới một component `HelloWorld.tsx`
+
 ```
 import React from 'react';
 import { Text } from 'react-native/types';
@@ -147,6 +149,7 @@ Các script được import từ `React.lazy` sẽ tự động được tạo t
 - Bundling 
 
 Cài `webpack-cli`
+
 ```
 yarn add webpack-cli --dev
 ```
