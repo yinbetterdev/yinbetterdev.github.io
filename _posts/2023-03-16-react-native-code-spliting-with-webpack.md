@@ -69,8 +69,6 @@ project.ext.react = [
 ]
 ```
 
-
-
 #### Thêm script thường dùng
 
 Thêm các script hay dùng vào `package.json`
@@ -213,8 +211,8 @@ Chúng ta có thể thực hiện `Code Push` với `Code Splitting` theo các b
 ## Lời kết
 Vừa rồi mình đã giới thiệu sơ qua đến các bạn về Code Splitting, ứng dụng và demo trên React-Native. Đây chỉ là những gì mình thu nạp được sau khi nghiên cứu trên mạng nên có nhiều thiếu sót. Hy vọng mọi người sẽ cùng nhau xây dựng.
 
-Bài tới mính sẽ giới thiệu đến các bạn `Module Federation`, và ứng dụng nó để xây dựng `Micro-Fronent`, Mini app
+Bài tới mình sẽ giới thiệu đến các bạn `Module Federation`, và ứng dụng nó để xây dựng `Micro-Fronent`, Mini app
 
-## Tài liệu tham khải
+## Tài liệu tham khảo
 
 - [https://re-pack.netlify.app/docs/code-splitting](https://re-pack.netlify.app/docs/code-splitting)
