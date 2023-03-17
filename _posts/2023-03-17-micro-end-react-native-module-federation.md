@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Cấu trúc Micro-fronent trên mobile app React-native với module-federation, @callstack/repack"
-description: "Cấu trúc Micro-fronent trên mobile app React-native với module-federation, @callstack/repack"
+title: "Kỳ 2: Cấu trúc Micro-fronent trên mobile app React-native với module-federation, @callstack/repack"
+description: "Kỳ 2: Cấu trúc Micro-fronent trên mobile app React-native với module-federation, @callstack/repack"
 comments: true
 keywords: "micro-frontend, react-native, mobile, repack, module-federation"
 ---

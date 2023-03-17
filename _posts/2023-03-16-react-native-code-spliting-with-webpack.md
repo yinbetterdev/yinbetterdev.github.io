@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "React-native Code Splitting with webpack"
-description: "React-native Code Splitting with webpack"
+title: "Kỳ 1: React-native Code Splitting with webpack"
+description: "Kỳ 1: React-native Code Splitting with webpack"
 comments: true
 keywords: "micro-frontend, react-native, mobile, repack, module-federation"
 ---
@@ -212,6 +212,8 @@ Chúng ta có thể thực hiện `Code Push` với `Code Splitting` theo các b
 Vừa rồi mình đã giới thiệu sơ qua đến các bạn về Code Splitting, ứng dụng và demo trên React-Native. Đây chỉ là những gì mình thu nạp được sau khi nghiên cứu trên mạng nên có nhiều thiếu sót. Hy vọng mọi người sẽ cùng nhau xây dựng.
 
 Bài tới mình sẽ giới thiệu đến các bạn `Module Federation`, và ứng dụng nó để xây dựng `Micro-Fronent`, Mini app
+
+Link [Kỳ 2: Cấu trúc Micro-fronent trên mobile app React-native](https://yinbetterdev.github.io/2023/micro-end-react-native-module-federation/)
 
 ## Tài liệu tham khảo
 
