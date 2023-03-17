@@ -160,7 +160,7 @@ npx webpack-cli -c webpack.config.mjs --env platform=android --env mode=developm
 
 Sau khi chạy xong các bạn sẽ thấy 1 chunk tên `HelloWorld_tsx.chunk.bundle` được tạo ra trong thư mục build như sau
 
-![HelloWorld_tsx.chunk.bundle](../assets/images/2023-03-16-react-native-code-spliting-with-webpack.png)
+![HelloWorld_tsx.chunk.bundle](./images/2023-03-16-react-native-code-spliting-with-webpack.png)
 
 Như các bạn có thể thấy, toàn bộ script của `HelloWorld` đã được tạo thành một bundle riêng và tách ra khỏi `index.bundle`. `HelloWorld_tsx.chunk.bundle` sẽ được load vào chương trình khi cần bằng `React.lazy`, nó có thể dược lưu ở local hoặc host trên server/cdn
 

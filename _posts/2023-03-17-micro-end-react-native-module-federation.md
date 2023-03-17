@@ -15,7 +15,7 @@ Trước khi bắt đầu, hãy chắc chắn bạn đã đọc bài về [Code 
 
 `Module Federation` là một kiến trúc, nó giúp phân chia ứng dụng thành nhiều phần. Những phần này được gọi là các container. Tương tự như micro-services, Module Federation phân chia ứng dụng thành nhiều frontend phân tán, đôi khi được gọi là micro-frontends.
 
-![micro frontend](../assets/images/microfrontend.png)
+![micro frontend](./images/microfrontend.png)
 
 ### Ưu điểm
 - Khả năng chia ứng dụng thành nhiều micro-frontends cô lập.
